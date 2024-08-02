@@ -1,0 +1,2 @@
+class Equipable < ApplicationRecord
+end
