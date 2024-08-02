@@ -17,4 +17,33 @@
         background-color: black;
         color: mediumseagreen;
         font-family: "Source Code Pro", Monaco, monospace;
+        border-color: mediumseagreen;
     }
+
+.welcome_xmonka
+{
+    border-style: dashed;
+    text-align: center;
+    padding: 25px;
+}
+
+.user_login
+{
+    border-style: dashed;
+    text-align: center;
+    padding: 50px;
+}
+
+.user_form
+
+{
+
+    text-align: center;
+    border-style: dashed;
+    padding: 50px;
+    margin-top: 30px;
+    margin-left: 240px;
+    margin-right: 240px;
+    column-span: initial;
+
+}
