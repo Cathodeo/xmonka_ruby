@@ -1,24 +1,6 @@
-# README
+Xmonka ruby version
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Initial test commit from RubyMine
+PostgresDB migrated to SQLite for development purposes + Models already setup
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Todo: Everything :)
