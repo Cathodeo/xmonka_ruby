@@ -60,6 +60,45 @@ textarea {
 
 }
 
+.section_board
+{
+    display: flex;
+    border-style: dashed;
+    padding: 10px;
+    margin-bottom: 50px;
+
+}
+
+.card_container
+{
+    margin-right: 10px;
+    border-style: solid;
+    padding: 5px;
+    margin-left: 10px;
+    margin-top: 5px;
+    height: 330px;
+    width: 180px;
+}
+
+.card_container_imgframe
+
+{
+
+    border-style: dotted;
+    padding: 10px;
+
+}
+
+.card_container_info
+
+{
+    margin-top: 10px;
+    height: 120px;
+    border-style: dotted;
+    text-align: center;
+    font-size: x-small;
+    padding: 3px;
+}
 
 .user_dupa
 {

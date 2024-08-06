@@ -1,0 +1,40 @@
+<div class = section_board>
+
+  <div class = card_container>
+    <div class = card_container_imgframe>
+      <%= image_tag("Monster_" + @monid1 + ".jpeg", :alt => "monster_1", size: '150x150') %>
+    </div>
+
+    <div class = card_container_info>
+      <p> <%= Monster.where(id: @monid1).pluck(:name).first %></p>
+      <h4> Move: <%= Move.where(id: Monster.where(id:@monid1).pluck(:move_id).first).pluck(:name).first %></h4>
+      <p><%= Move.where(id: Monster.where(id:@monid1).pluck(:move_id).first).pluck(:description).first %></p>
+    </div>
+  </div>
+
+
+  <div class = card_container>
+    <div class = card_container_imgframe>
+
+    </div>
+  </div>
+</div>
+
+<div class = section_board>
+
+  <div class = card_container>
+    <div class = card_container_imgframe>
+      <%= image_tag("Monster_" + @monid2 + ".jpeg", :alt => "monster_1", size: '150x150') %>
+    </div>
+
+    <div class = card_container_info>
+      <p> <%= Monster.where(id: @monid2).pluck(:name).first %></p>
+      <h4> Move: <%= Move.where(id: Monster.where(id:@monid2).pluck(:move_id).first).pluck(:name).first %></h4>
+      <p><%= Move.where(id: Monster.where(id:@monid2).pluck(:move_id).first).pluck(:description).first %></p>
+    </div>
+  </div>
+
+  <div class = card_container>
+
+  </div>
+</div>
