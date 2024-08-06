@@ -1,0 +1,229 @@
+
+---
+cards:
+  columns:
+  - id
+  - cardtype
+  - foreign_id
+  records: 
+  - - '1'
+    - '1'
+    - '1'
+  - - '10'
+    - '3'
+    - '1'
+  - - '11'
+    - '3'
+    - '2'
+  - - '12'
+    - '3'
+    - '3'
+  - - '13'
+    - '3'
+    - '4'
+  - - '14'
+    - '3'
+    - '5'
+  - - '2'
+    - '1'
+    - '2'
+  - - '3'
+    - '1'
+    - '3'
+  - - '4'
+    - '1'
+    - '4'
+  - - '5'
+    - '1'
+    - '5'
+  - - '6'
+    - '1'
+    - '6'
+  - - '7'
+    - '1'
+    - '7'
+  - - '8'
+    - '2'
+    - '1'
+  - - '9'
+    - '2'
+    - '2'
+
+---
+consumables:
+  columns:
+  - id
+  - name
+  - description
+  records: 
+  - - '1'
+    - Spiky tape
+    - Prevents one healthppint of damage and deals it to the foe
+  - - '2'
+    - Eject protocol
+    - Allows the monster to attack and switch the same turn
+
+---
+elements:
+  columns:
+  - id
+  - name
+  records: 
+  - - '1'
+    - Robot
+  - - '2'
+    - Animal
+  - - '3'
+    - Biohazard
+  - - '4'
+    - Radio
+
+---
+equipables:
+  columns:
+  - id
+  - name
+  - element_id
+  - move_id
+  - description
+  records: 
+  - - '1'
+    - Rainbow launcher
+    - '4'
+    - '7'
+    - Rocket Launcher that attachs to a Radio droid
+  - - '2'
+    - Droid Hammer
+    - '2'
+    - '9'
+    - A huge hammer that appends to a Robot
+  - - '3'
+    - Horned Helmet
+    - '4'
+    - '5'
+    - A helmet that can be used by an Animal
+  - - '4'
+    - Corrosion Element
+    - '3'
+    - '10'
+    - Allows a Biohazard type monster to puke corrosive chemistry
+  - - '5'
+    - Gaseose reaction
+    - '3'
+    - '11'
+    - Allows a Biohazard type monster to expel gas
+
+---
+monsters:
+  columns:
+  - id
+  - name
+  - healthpoints
+  - element_id
+  - move_id
+  records: 
+  - - '1'
+    - Crimson Bovid
+    - '10'
+    - '2'
+    - '4'
+  - - '2'
+    - Vermin FM
+    - '4'
+    - '2'
+    - '1'
+  - - '3'
+    - B.O.B
+    - '6'
+    - '1'
+    - '3'
+  - - '4'
+    - Funk Station
+    - '6'
+    - '4'
+    - '8'
+  - - '5'
+    - Maladin
+    - '5'
+    - '3'
+    - '2'
+  - - '6'
+    - Patcher
+    - '7'
+    - '1'
+    - '6'
+  - - '7'
+    - Goostav
+    - '8'
+    - '3'
+    - '12'
+
+---
+moves:
+  columns:
+  - id
+  - name
+  - power
+  - element_id
+  - description
+  records: 
+  - - '1'
+    - Sabotage Signal
+    - '2'
+    - '4'
+    - Throw a coin. If heads and the oponent is Robot, paralyzes one turn
+  - - '10'
+    - Corroder
+    - '3'
+    - '3'
+    - Deals double damage to Robots
+  - - '11'
+    - Foul Gas
+    - '3'
+    - '3'
+    - Double damage against poisoned foes
+  - - '12'
+    - Gooey String
+    - '1'
+    - '3'
+    - The foe monster cant be switched the next turn
+  - - '2'
+    - Pestilence
+    - '1'
+    - '3'
+    - Animal foes become poisoned, losing health every turn
+  - - '3'
+    - Zapper
+    - '3'
+    - '1'
+    - Toss a coin. If tails, the attack misses
+  - - '4'
+    - Stompede
+    - '2'
+    - '2'
+    - The opposing foe has to switch Monster cards
+  - - '5'
+    - Horned Tackle
+    - '3'
+    - '2'
+    - Powerful tackle. No additional effects
+  - - '6'
+    - Energy Transfer
+    - '2'
+    - '1'
+    - The user may heal one healthpoint from himself or a benched robot
+  - - '7'
+    - Rainbow Bomb
+    - '3'
+    - '4'
+    - A powerful electromagnetic bomb. No additional effects
+  - - '8'
+    - Null Frequency
+    - '3'
+    - '4'
+    - Does not work against non-Robot foes
+  - - '9'
+    - Droid hammer
+    - '3'
+    - '1'
+    - Toss a coin. If heads, the oponent is stunned a turn
