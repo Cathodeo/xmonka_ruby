@@ -29,3 +29,8 @@
 
 en:
   hello: "Hello world"
+  authentication:
+    sessions:
+      create:
+        created: "User logged in!"
+        wrong_credentials: "Wrong credentials. Review user and password!"

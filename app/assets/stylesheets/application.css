@@ -20,6 +20,18 @@
         border-color: mediumseagreen;
     }
 
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+    background-color: black;
+    color: yellowgreen;
+    font-size: 110%;
+    padding: 5px;
+    border-style: solid;
+}
+
 .welcome_xmonka
 {
     border-style: dashed;
@@ -27,7 +39,7 @@
     padding: 25px;
 }
 
-.user_login
+.user_first
 {
     border-style: dashed;
     text-align: center;
@@ -46,4 +58,10 @@
     margin-right: 240px;
     column-span: initial;
 
+}
+
+
+.user_dupa
+{
+    background-image: url("/public/background-login.jpg")
 }

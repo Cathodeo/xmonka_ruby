@@ -5,17 +5,24 @@
     <title>Welcome to Xmonka</title>
 </head>
 <body>
+
+<% flash.each do |type, msg| %>
+  <div class="welcome_xmonka">
+    <%= msg %>
+  </div>
+<% end %>
+
 <div class="welcome_xmonka">
 <h1>Welcome to Xmonka!</h1>
 </div>
 
-<div class="user_login">
+<div class="user_first">
 
   <h3 style="border-style: none none solid none;padding-bottom: 20px ">
     <a href=/users/new> Sign Up </a></h3>
   <br><br>
   <h3 style="border-style: none none solid none;padding-bottom: 20px ">
-    <a href=/users/new> Login </a>
+    <a href=/sessions/new> Login </a>
   </h3>
 </div>
 

@@ -1,0 +1,24 @@
+<%= form_with(url: sessions_path) do |form| %>
+
+    <% flash.each do |type, msg| %>
+    <div class="user_form">
+      <%= msg %>
+    </div>
+    <% end %>
+
+
+  <div class="user_form">
+      <%= form.label :login %>
+      <%= form.text_field :login %>
+    </div>
+
+    <div class="user_form">
+      <%= form.label :password %>
+      <%= form.password_field :password %>
+    </div>
+
+    <div class="user_form">
+      <%= form.submit %>
+    </div>
+
+<% end %>
