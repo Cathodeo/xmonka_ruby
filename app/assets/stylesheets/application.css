@@ -62,6 +62,7 @@ textarea {
 
 .section_board
 {
+    align-items: center;
     display: flex;
     border-style: dashed;
     padding: 10px;
@@ -98,6 +99,35 @@ textarea {
     text-align: center;
     font-size: x-small;
     padding: 3px;
+}
+
+.stats_container
+
+{
+    margin-right: 10px;
+    border-style: solid;
+    padding: 5px;
+    margin-left: 10px;
+    margin-top: 5px;
+    height: 330px;
+    width: 420px;
+}
+
+.stats_container_inside
+
+{ border-style: dotted;
+    padding: 10px;
+  height: 50%;
+font-size: large;}
+
+
+.option-row
+{display: flex;
+    height: 38px;
+    margin-top: 12px;
+ border-style: dotted;
+    padding: 5px;
+    font-size: x-small;
 }
 
 .user_dupa

@@ -1,5 +1,26 @@
 <div class = section_board>
 
+
+  <div class = stats_container>
+
+    <div class = stats_container_inside>
+      <p><%= Monster.where(id: @monid1).pluck(:name).first %></p>
+      <p>Equiped item: None</p>
+      <p>Status: Healthy</p>
+      <p>HP:
+        <% for i in 1..Monster.where(id: @monid1).pluck(:healthpoints).first do %>
+          <%= "●" %>
+        <% end %></p>
+    </div>
+
+  </div>
+
+  <div class = card_container>
+    <div class = card_container_imgframe>
+      
+    </div>
+  </div>
+
   <div class = card_container>
     <div class = card_container_imgframe>
       <%= image_tag("Monster_" + @monid1 + ".jpeg", :alt => "monster_1", size: '150x150') %>
@@ -13,12 +34,9 @@
   </div>
 
 
-  <div class = card_container>
-    <div class = card_container_imgframe>
 
-    </div>
-  </div>
 </div>
+
 
 <div class = section_board>
 
@@ -37,4 +55,36 @@
   <div class = card_container>
 
   </div>
+
+
+  <div class = stats_container>
+
+    <div class = stats_container_inside>
+      <p><%= Monster.where(id: @monid2).pluck(:name).first %></p>
+      <p>Equiped item: None</p>
+      <p>Status: Healthy</p>
+      <p>HP:
+        <% for i in 1..Monster.where(id: @monid2).pluck(:healthpoints).first do %>
+          <%= "●" %>
+        <% end %></p>
+    </div>
+
+    <div class = option-row>
+      <p>Attacks: </p>
+      <button type="button"> <%= Move.where(id: Monster.where(id:@monid2).pluck(:move_id).first).pluck(:name).first %></button>
+      <button type="button">No item equiped!</button>
+    </div>
+
+    <div class = option-row>
+      <p></p>
+      <button type="button">Switch</button>
+      <button type="button">End Turn</button>
+      <button type="button">Equip</button>
+    </div>
+
+  </div>
+
+
+
+
 </div>
