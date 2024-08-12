@@ -3,7 +3,15 @@
 
 Xmonka ruby version
 
-Initial test commit from RubyMine
-PostgresDB migrated to SQLite for development purposes + Models already setup
+Elixir models > Ruby models
+Phoenix templates > ERB Templates 
+Postgres > SQLITE
 
-Todo: Everything :)
+Doing now:
+
+Implementing reactive features with Hotwire/Turbo
+
+Todo:
+
+-Battle actions model
+-Expand the current selection of test cards
