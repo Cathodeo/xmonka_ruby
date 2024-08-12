@@ -12,5 +12,8 @@ Rails.application.routes.draw do
   end
   # Defines the root path route ("/")
   # root "posts#index"
-  get "game_board/:mon1/:mon2", to: "games#board"
+  get "game_deck", to: "games#deck", as: :game_deck
+  post 'initialize_monster', to: 'games#initialize_monster', as: :initialize_monster
+  get "game_hand", to: "games#hand", as: :game_hand
+  get "game_board/:mon1/:mon2", to: "games#board", as: :game_board
 end

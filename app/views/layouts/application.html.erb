@@ -12,7 +12,8 @@
 
   <body>
       <div style="text-align: center;">
-      <%= image_tag("xmonkalogo.svg", :alt => "xmonka_logo", size: '250x250') %>
+      <%= link_to image_tag("xmonkalogo.svg", :alt => "xmonka_logo", size: '250x250') ,"/" %>
+        <h6>Logged as: <%= Current.user.username %></h6>
       </div>
     <%= yield %>
   </body>
