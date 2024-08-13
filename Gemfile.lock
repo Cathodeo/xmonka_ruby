@@ -131,6 +131,7 @@ GEM
       net-smtp
     marcel (1.0.4)
     matrix (0.4.2)
+    mini_magick (4.13.2)
     mini_mime (1.1.5)
     minitest (5.24.1)
     msgpack (1.7.2)
@@ -192,6 +193,8 @@ GEM
     rails-html-sanitizer (1.6.0)
       loofah (~> 2.21)
       nokogiri (~> 1.14)
+    rails_dominant_colors (0.2.0)
+      mini_magick (~> 4.10)
     railties (7.1.3.4)
       actionpack (= 7.1.3.4)
       activesupport (= 7.1.3.4)
@@ -273,6 +276,7 @@ DEPENDENCIES
   jbuilder
   puma (>= 5.0)
   rails (~> 7.1.3, >= 7.1.3.4)
+  rails_dominant_colors
   selenium-webdriver
   sprockets-rails
   sqlite3 (~> 1.4)

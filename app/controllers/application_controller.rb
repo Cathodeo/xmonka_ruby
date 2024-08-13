@@ -10,6 +10,6 @@ class ApplicationController < ActionController::Base
   end
 
   def protect_pages
-    redirect to sessions_path unless Current.user
+    redirect_to new_session_path unless Current.user
   end
 end

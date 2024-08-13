@@ -1,3 +1,5 @@
+<% colors = 4  %>
+
 <div class = section_board>
 
 
@@ -21,15 +23,17 @@
     </div>
   </div>
 
-  <div class = card_container>
-    <div class = card_container_imgframe>
-      <%= image_tag("Monster_" + @monid1 + ".jpeg", :alt => "monster_1", size: '150x150') %>
+  <% monster_color1 = RailsDominantColors::Path.new("/home/tmmartin/Documents/Ruby/xmonka/app/assets/images/Card_" + @monid1 + ".jpeg", colors) %>
+  <div class = card_container style="border-color: <%= monster_color1.to_hex[1] %>">
+    <div class = card_container_imgframe style="border-color: <%= monster_color1.to_hex[3] %>" >
+      <%= image_tag("Card_" + @monid1 + ".jpeg", :alt => "monster_1", size: '160x160') %>
     </div>
 
-    <div class = card_container_info>
-      <p> <%= Monster.where(id: @monid1).pluck(:name).first %></p>
-      <h4> Move: <%= Move.where(id: Monster.where(id:@monid1).pluck(:move_id).first).pluck(:name).first %></h4>
-      <p><%= Move.where(id: Monster.where(id:@monid1).pluck(:move_id).first).pluck(:description).first %></p>
+    <div class = card_container_info
+         style="border-color: <%= monster_color1.to_hex[2] %>;">
+      <p style="color: <%= monster_color1.to_hex[0] %>;"> <%= Monster.where(id: @monid1).pluck(:name).first %></p>
+      <h3 style="color: <%= monster_color1.to_hex[0] %>;"> Move: <%= Move.where(id: Monster.where(id:@monid1).pluck(:move_id).first).pluck(:name).first %></h3>
+      <h4 style="color: <%= monster_color1.to_hex[0] %>;"><%= Move.where(id: Monster.where(id:@monid1).pluck(:move_id).first).pluck(:description).first %></h4>
     </div>
   </div>
 
@@ -40,15 +44,17 @@
 
 <div class = section_board>
 
-  <div class = card_container>
-    <div class = card_container_imgframe>
-      <%= image_tag("Monster_" + @monid2 + ".jpeg", :alt => "monster_1", size: '150x150') %>
+  <% monster_color2 = RailsDominantColors::Path.new("/home/tmmartin/Documents/Ruby/xmonka/app/assets/images/Card_" + @monid2 + ".jpeg", colors) %>
+  <div class = card_container style="border-color: <%= monster_color2.to_hex[1] %>">
+    <div class = card_container_imgframe style="border-color: <%= monster_color2.to_hex[3] %>" >
+      <%= image_tag("Card_" + @monid2 + ".jpeg", :alt => "monster_1", size: '160x160') %>
     </div>
 
-    <div class = card_container_info>
-      <p> <%= Monster.where(id: @monid2).pluck(:name).first %></p>
-      <h4> Move: <%= Move.where(id: Monster.where(id:@monid2).pluck(:move_id).first).pluck(:name).first %></h4>
-      <p><%= Move.where(id: Monster.where(id:@monid2).pluck(:move_id).first).pluck(:description).first %></p>
+    <div class = card_container_info
+         style="border-color: <%= monster_color2.to_hex[2] %>;">
+      <p style="color: <%= monster_color2.to_hex[0] %>;"> <%= Monster.where(id: @monid2).pluck(:name).first %></p>
+      <h3 style="color: <%= monster_color2.to_hex[0] %>;"> Move: <%= Move.where(id: Monster.where(id:@monid2).pluck(:move_id).first).pluck(:name).first %></h3>
+      <h4 style="color: <%= monster_color2.to_hex[0] %>;"><%= Move.where(id: Monster.where(id:@monid2).pluck(:move_id).first).pluck(:description).first %></h4>
     </div>
   </div>
 
@@ -60,10 +66,10 @@
   <div class = stats_container>
 
     <div class = stats_container_inside>
-      <p><%= Monster.where(id: @monid2).pluck(:name).first %></p>
-      <p>Equiped item: None</p>
-      <p>Status: Healthy</p>
-      <p>HP:
+      <p style="color: <%= monster_color2.to_hex[0] %>;"><%= Monster.where(id: @monid2).pluck(:name).first %></p>
+      <p style="color: <%= monster_color2.to_hex[1] %>;">Equiped item: None</p>
+      <p style="color: <%= monster_color2.to_hex[2] %>;">Status: Healthy</p>
+      <p style="color: <%= monster_color2.to_hex[3] %>;">HP:
         <% for i in 1..Monster.where(id: @monid2).pluck(:healthpoints).first do %>
           <%= "●" %>
         <% end %></p>

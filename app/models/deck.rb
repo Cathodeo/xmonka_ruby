@@ -6,7 +6,7 @@ class Deck
   attr_accessor :player_deck, :player_name
   def initialize
     @player_name = "Provisional"
-    @deck_size = 20
+    @deck_size = 15
     @player_deck = Hash.new
     populate_deck
     end
@@ -70,8 +70,42 @@ end
   end
 
 
+  def card_details(card_id)
+    # Fetch card details from Card and Monster models
+    card = Card.find(card_id)
+    monster = Monster.find_by(id: card.foreign_id) if card.cardtype == 1
+
+    {
+      name:
+        case card.cardtype
+        when 1
+          Monster.where(id: card.foreign_id).pluck(:name).first
+        when 2
+          Consumable.where(id: card.foreign_id).pluck(:name).first
+        when 3
+          Equipable.where(id: card.foreign_id).pluck(:name).first
+        else
+          "Unknown name"
 
 
+        end,
+      type:
+        case card.cardtype
+        when 1
+          "Monster"
+        when 2
+          "Consumable"
+        when 3
+          "Equipable"
+        else
+          "Unknown type"
+        end,
+
+      monster_hp: monster&.healthpoints || 'N/A',
+
+      card_id: Card.where(id: card.id).pluck(:id).first.to_s
+    }
+    end
 
 
 

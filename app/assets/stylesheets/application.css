@@ -62,6 +62,7 @@ textarea {
 
 .section_board
 {
+    border-radius: 10px;
     align-items: center;
     display: flex;
     border-style: dashed;
@@ -72,19 +73,23 @@ textarea {
 
 .card_container
 {
+    border-radius: 15px;
     margin-right: 10px;
+    background-color: #152115;
     border-style: solid;
     padding: 5px;
     margin-left: 10px;
     margin-top: 5px;
     height: 330px;
-    width: 180px;
+    width: 200px;
 }
 
 .card_container_imgframe
 
 {
 
+    border-radius: 10px;
+    align-content: center;
     border-style: dotted;
     padding: 10px;
 
@@ -93,6 +98,7 @@ textarea {
 .card_container_info
 
 {
+    border-radius: 10px;
     margin-top: 10px;
     height: 120px;
     border-style: dotted;
@@ -111,13 +117,17 @@ textarea {
     margin-top: 5px;
     height: 330px;
     width: 420px;
+    border-radius: 10px;
 }
 
 .stats_container_inside
 
-{ border-style: dotted;
+
+{   text-align: centeriiiii;
+    border-style: dotted;
     padding: 10px;
   height: 50%;
+    border-radius: 10px;
 font-size: large;}
 
 

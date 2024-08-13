@@ -13,7 +13,13 @@
   <body>
       <div style="text-align: center;">
       <%= link_to image_tag("xmonkalogo.svg", :alt => "xmonka_logo", size: '250x250') ,"/" %>
-        <h6>Logged as: <%= Current.user.username %></h6>
+        <h6>
+        <% if Current.user == nil %>
+        <%= "No user logged in" %>
+        <% else %>
+        <%= "Logged as:" + Current.user.username %>
+          <% end %>
+        </h6>
       </div>
     <%= yield %>
   </body>

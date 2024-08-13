@@ -1,19 +1,30 @@
 <!-- app/views/games/deck.html.erb -->
-<h1>Deck Debug menu</h1>
-<h2>Hand</h2>
-<ul>
-  <% @player_deck.each do |key, card| %>
-    <% if card[:position] == :hand %>
-      <li>Card ID: <%= card[:card_id] %></li>
-    <% end %>
-  <% end %>
-</ul>
 
-<h2>Deck</h2>
-<ul>
-  <% @player_deck.each do |key, card| %>
-    <% if card[:position] == :deck %>
-      <li>Card ID: <%= card[:card_id] %></li>
-    <% end %>
-  <% end %>
-</ul>
+  <div class="deck_debug_table">
+
+    <!-- app/views/games/deck.html.erb -->
+    <h1>Player Deck</h1>
+    <table>
+      <thead>
+      <tr>
+        <th>Position</th>
+        <th>Card Name</th>
+        <th>Card Type</th>
+        <th>Monster HP</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @arrayed_deck.each do |card| %>
+        <tr>
+          <td><%= image_tag("Card_" + card[:card_id] + ".jpeg", :alt => "monster_1", size: '150x150') %></td>
+          <td><%= card[:position] %></td>
+          <td><%= card[:name] %></td>
+          <td><%= card[:type] %></td>
+          <td><%= card[:monster_hp] %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+
+  </div>

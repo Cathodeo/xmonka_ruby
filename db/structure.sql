@@ -49,6 +49,15 @@ CREATE TABLE IF NOT EXISTS "users" ("id" integer PRIMARY KEY AUTOINCREMENT NOT N
 CREATE TABLE sqlite_sequence(name,seq);
 CREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email");
 CREATE UNIQUE INDEX "index_users_on_username" ON "users" ("username");
+CREATE TABLE IF NOT EXISTS "database_structures" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL);
+CREATE TABLE IF NOT EXISTS "player_decks" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "deck_data" text, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_54ae89d469"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+);
+CREATE INDEX "index_player_decks_on_user_id" ON "player_decks" ("user_id");
 INSERT INTO "schema_migrations" (version) VALUES
-('20240802185549');
+('20240813193458'),
+('20240802185549'),
+('20240731224025'),
+('20240731223826');
 
