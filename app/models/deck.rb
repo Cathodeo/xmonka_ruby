@@ -5,14 +5,23 @@ class Deck
 
   attr_accessor :player_deck, :player_name
   def initialize
+    #Initialize an empty deck and populate it
     @player_name = "Provisional"
     @deck_size = 15
     @player_deck = Hash.new
     populate_deck
+    puts("Initialized Deck")
     end
 
 
+
+  #Turn 1 logic to choose first in game monster.
+  # (Todo: Safeguards for cases where no Monster card is in hand)
 def populate_deck
+
+  # Beginning the game flow generating a 'Random deck', the random-ness will be
+  # more fine tuned as the deck is completed, for balance purposes.
+
   @deck_size.times do |i|
     random = rand(1..14)
     monster_content = {}
@@ -22,6 +31,7 @@ def populate_deck
         current_hp: Monster.where(id: Card.where(id: random).pluck(:foreign_id)).pluck(:healthpoints).first,
         status_id: 0,
         equipped_id: 0,
+        cooldown: Monster.where(id: Card.where(id: random).pluck(:foreign_id)).pluck(:cooldown).first
       }
       is_monster = true
     end
@@ -32,10 +42,14 @@ def populate_deck
                   position: :deck}
 
     @player_deck[i] = hash_value
+    puts("Populated deck of #{@deck_size} cards for player #{@player_name}")
   end
 end
 
   def initial_hand
+    #A hand of five cards as the first available one
+    #Special cards that allow retrieving a new full hand
+    # might reuse this method
     count = 0
     @player_deck.each do |key, value|
       if count < 5 && value[:position] != :hand
@@ -43,35 +57,127 @@ end
         count += 1
       end
     end
+    puts("Populated initial hand of five cards")
   end
 
 
-  def eligible_monsters
-    @player_deck.values.select do |card_hash|
-      card_hash[:monster_card] && card_hash[:position] == :hand
-    end.map { |card_hash| card_hash[:card_id] }
-  end
-
-  def initialize_monster(chosen_monster_id)
+  def initialize_monster(monster_key)
+    # This method checks against global card type and not the 'Key'
+    # This means the first occurrence of any monster chosen of the same type will be
+    # initialized.
     # Check if any card is already in the :gamearea
     any_in_gamearea = @player_deck.any? { |_key, subhash| subhash[:position] == :gamearea }
 
     # Iterate through the player deck and update the position of the chosen monster
     @player_deck.each do |key, subhash|
-      if subhash[:card_id] == chosen_monster_id
+      if key == monster_key
         if any_in_gamearea
           subhash[:position] = :bench
         else
           subhash[:position] = :gamearea
         end
+        puts("Initialized card key #{key} of type #{subhash[:card_id]}")
         break  # Stop after finding and updating the first match
       end
     end
+
+  end
+
+
+  def switch_monsters(outgoing_key, incoming_key, debug)
+    # Initialize variables to hold the keys of the valid cards
+    outgoing_card = nil
+    incoming_card = nil
+
+    # Find the outgoing card and validate it
+    @player_deck.each do |key, subhash|
+      if key == outgoing_key && subhash[:position] == :gamearea && (subhash[:cooldown] == 0 || debug)
+        puts "The outgoing card is valid"
+        outgoing_card = key
+        break
+      end
+    end
+
+    # Find the incoming card and validate it
+    @player_deck.each do |key, subhash|
+      if key == incoming_key && subhash[:position] == :bench
+        puts "Valid incoming card"
+        incoming_card = key
+      end
+    end
+
+    # Check if both cards are valid
+    if outgoing_card.nil? || incoming_card.nil?
+      puts "Invalid match of cards. Aborting"
+    else
+      puts "Switching card #{outgoing_card} with #{incoming_card}"
+
+      # Perform the switch
+      @player_deck[outgoing_card][:position] = :bench
+      @player_deck[incoming_card][:position] = :gamearea
+    end
+  end
+
+  def terminate_card(card_key)
+    #Discard a card.
+    # Consumables = Terminated upon consumption
+    # Monsters = Terminated when HP = 0
+    # Equipables = Terminated when the Monster they are assigned to is terminated
+    # Special consumables might discard one or several handed cards
+    @player_deck.each do |key, subhash|
+      if key == card_key
+        subhash[:position] = :discarded
+      end
+    end
+  end
+
+  def is_monster_ingame?
+    @player_deck.any? { |_key, subhash| subhash[:position] == :gamearea }
+  end
+
+  def which_monster_ingame
+    if is_monster_ingame?
+      # Find the key and subhash where conditions are met
+      key, subhash = @player_deck.find do |key, subhash|
+        subhash[:position] == :gamearea && subhash[:monster_card] == true
+      end
+
+      if key && subhash
+        # Print the key of the found card
+        puts "Card with key #{key}"
+
+        # Fetch and return card details for the found card
+        card_details(subhash[:card_id])
+      else
+        # No card found that meets the conditions
+        puts "No card found in the game area!"
+      end
+    else
+      puts "No cards in game!"
+    end
+  end
+
+  ##Methods that serve only the view
+
+  def eligible_monsters
+    #Shows Monster type cards which are on the hand,
+    #Allows to choose the first monster/s to initialize on turn 1
+    eligible_list = @player_deck.select do |key, card_hash|
+      card_hash[:monster_card] && card_hash[:position] == :hand
+    end.keys
+    if eligible_list.empty?
+      puts("No eligible monsters in hand")
+    else
+      puts("The following monster cards are eligible: #{eligible_list}")
+      end
+
   end
 
 
   def card_details(card_id)
     # Fetch card details from Card and Monster models
+    # This version is only for debug purposes, since the player should
+    # only ever see his hand
     card = Card.find(card_id)
     monster = Monster.find_by(id: card.foreign_id) if card.cardtype == 1
 
@@ -106,6 +212,10 @@ end
       card_id: Card.where(id: card.id).pluck(:id).first.to_s
     }
     end
+
+  def monster_overview
+
+  end
 
 
 

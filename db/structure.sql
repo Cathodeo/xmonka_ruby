@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS "monsters" (
 	"name"	TEXT,
 	"healthpoints"	INTEGER,
 	"element_id"	INTEGER,
-	"move_id"	INTEGER,
+	"move_id"	INTEGER, "cooldown" integer,
 	FOREIGN KEY("element_id") REFERENCES "elements"("id"),
 	FOREIGN KEY("move_id") REFERENCES "moves"("id"),
 	PRIMARY KEY("id")
@@ -56,6 +56,8 @@ FOREIGN KEY ("user_id")
 );
 CREATE INDEX "index_player_decks_on_user_id" ON "player_decks" ("user_id");
 INSERT INTO "schema_migrations" (version) VALUES
+('20240816164623'),
+('20240816163333'),
 ('20240813193458'),
 ('20240802185549'),
 ('20240731224025'),
