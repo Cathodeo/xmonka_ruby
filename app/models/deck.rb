@@ -3,12 +3,13 @@
 class Deck
 
 
-  attr_accessor :player_deck, :player_name
+  attr_accessor :player_deck, :player_name, :monsters_defeat
   def initialize
     #Initialize an empty deck and populate it
     @player_name = "Provisional"
-    @deck_size = 15
+    @deck_size = 16
     @player_deck = Hash.new
+    @monsters_defeat = 3
     populate_deck
     puts("Initialized Deck")
     end
@@ -23,7 +24,7 @@ def populate_deck
   # more fine tuned as the deck is completed, for balance purposes.
 
   @deck_size.times do |i|
-    random = rand(1..14)
+    random = rand(1..28)
     monster_content = {}
     is_monster = false
     if Card.where(id: random).pluck(:cardtype).first == 1
@@ -118,7 +119,7 @@ end
     end
   end
 
-  def terminate_card(card_key)
+  def terminate_card(player, card_key)
     #Discard a card.
     # Consumables = Terminated upon consumption
     # Monsters = Terminated when HP = 0
@@ -127,7 +128,11 @@ end
     @player_deck.each do |key, subhash|
       if key == card_key
         subhash[:position] = :discarded
+        if subhash[:ismonster] == true
+          player.monsters_defeat -=1
+        end
       end
+
     end
   end
 
@@ -156,6 +161,95 @@ end
       puts "No cards in game!"
     end
   end
+
+  def which_monid
+    if is_monster_ingame?
+      # Find the key and subhash where conditions are met
+      key, subhash = @player_deck.find do |key, subhash|
+        subhash[:position] == :gamearea && subhash[:monster_card] == true
+      end
+
+      if key && subhash
+        # Print the key of the found card
+        puts "Card with key #{key}"
+
+        # Fetch and return card details for the found card
+       subhash[:card_id]
+      else
+        # No card found that meets the conditions
+        puts "No card found in the game area!"
+      end
+    else
+      puts "No cards in game!"
+    end
+  end
+
+  def which_monkey
+    if is_monster_ingame?
+      # Find the key and subhash where conditions are met
+      key, subhash = @player_deck.find do |key, subhash|
+        subhash[:position] == :gamearea && subhash[:monster_card] == true
+      end
+
+      if key && subhash
+        # Print the key of the found card
+        puts "Card with key #{key}"
+
+        # Fetch and return card details for the found card
+        key
+      else
+        # No card found that meets the conditions
+        puts "No card found in the game area!"
+      end
+    else
+      puts "No cards in game!"
+    end
+  end
+
+def damage_monster(chosen_key, damage, player)
+  player.player_deck.each do |key, subhash|
+    if key == chosen_key
+      # Ensure the correct data is accessed
+      monster_content = subhash[:monster_values]
+      if monster_content
+        current_hp = monster_content[:current_hp] || 0
+        new_hp = current_hp - damage
+        
+        puts "Former healthpoints: #{current_hp}"
+        puts "Received #{damage} of damage"
+        puts "Result: #{new_hp} healthpoints after damage"
+
+
+        monster_content[:current_hp] = new_hp
+
+        if monster_content[:current_hp] < 1
+          subhash[:position] = :discarded
+          player.monsters_defeat -=1
+          puts "Monster defeated! Card discarded."
+        end
+      else
+        puts "No monster content found for key #{key}"
+      end
+    end
+  end
+end
+
+
+  def game_over?(player1, player2)
+    # Check if any item is still in the deck
+    cards_left = player2.player_deck.any? { |_key, value| value[:position] == :deck }
+
+    # Check if any monsters are left either in the game or on the bench
+    monsters_left = player2.player_deck.any? do |_key, value|
+      value[:ismonster] == true && (value[:position] == :gamearea || value[:position] == :bench)
+    end
+
+    win_condition = player1.monsters_defeat == 0
+
+    !cards_left || !monsters_left || win_condition
+    puts "Game over!"
+  end
+
 
   ##Methods that serve only the view
 
@@ -213,9 +307,6 @@ end
     }
     end
 
-  def monster_overview
-
-  end
 
 
 

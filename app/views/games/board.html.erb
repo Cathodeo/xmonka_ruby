@@ -23,7 +23,7 @@
     </div>
   </div>
 
-  <% monster_color1 = RailsDominantColors::Path.new("/home/tmmartin/Documents/Ruby/xmonka/app/assets/images/Card_" + @monid1 + ".jpeg", colors) %>
+  <% monster_color1 = RailsDominantColors::Path.new("/home/tmmartin/Ruby/xmonka/app/assets/images/Card_" + @monid1 + ".jpeg", colors) %>
   <div class = card_container style="border-color: <%= monster_color1.to_hex[1] %>">
     <div class = card_container_imgframe style="border-color: <%= monster_color1.to_hex[3] %>" >
       <%= image_tag("Card_" + @monid1 + ".jpeg", :alt => "monster_1", size: '160x160') %>
@@ -44,7 +44,7 @@
 
 <div class = section_board>
 
-  <% monster_color2 = RailsDominantColors::Path.new("/home/tmmartin/Documents/Ruby/xmonka/app/assets/images/Card_" + @monid2 + ".jpeg", colors) %>
+  <% monster_color2 = RailsDominantColors::Path.new("/home/tmmartin/Ruby/xmonka/app/assets/images/Card_" + @monid2 + ".jpeg", colors) %>
   <div class = card_container style="border-color: <%= monster_color2.to_hex[1] %>">
     <div class = card_container_imgframe style="border-color: <%= monster_color2.to_hex[3] %>" >
       <%= image_tag("Card_" + @monid2 + ".jpeg", :alt => "monster_1", size: '160x160') %>
