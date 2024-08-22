@@ -5,21 +5,48 @@ class Move < ApplicationRecord
     __method__
   end
 
-  def pestilence(opponent)
-      puts "#{name} is used!"
-      # Poison the opponent's monster
-      if opponent.monster.animal_type?
-        opponent.monster.apply_status(:poison)
-        puts "Animal foe is poisoned!"
-      end
+
+
+  def self.element_monid(monid)
+    Element.where(id: (Monster.where(id: monid).pluck(:element_id).first)).pluck(:id).first
+  end
+
+  def self.element_matchup(element1, element2, damage)
+    if (element1 == 3 && element2 == 2) || (element1 == 4 && element2 == 1)
+      damage *= 2
+      puts "Doubled damage due to weakness!"
+    elsif (element1 == 4 && element2 == 2) || (element1 == 3 && element2 == 1)
+      damage = damage / 2
+      puts "Halved damage due to resistance!"
+    else
+      # No change in damage if no matchup
     end
 
-    def zapper(opponent)
+    return damage
+  end
+
+
+  def self.pestilence(player, target_key)
+      puts "Pestilence is used!"
+      # Poison the opponent's monster
+      foe_element =  element_monid(player.which_monid)
+      if foe_element == 2
+        player.alter_status(target_key, 3, player)
+        puts "Animal foe is poisoned!"
+      end
+      damage = element_matchup(3, foe_element, 3)
+      player.damage_monster(target_key, damage, player)
+    end
+
+    def self.zapper(player, target_key)
       puts "#{name} is used!"
+      foe_element =  element_monid(player.which_monid)
       result = coin_toss
       if result == :heads
-        opponent.monster.apply_status(:confused)
+        player.alter_status(target_key, 7, player)
         puts "Foe is confused!"
+        damage = element_matchup(1, foe_element, 3)
+        player.damage_monster(target_key, damage, player)
       else
         puts "Zapper missed!"
       end
@@ -215,13 +242,10 @@ class Move < ApplicationRecord
 
     private
 
-    def coin_toss
+    def self.coin_toss
       [:heads, :tails].sample
     end
 
-    def damage_deal(monster, damage)
-      monster.receive_damage(damage)
-    end
   end
 
 

@@ -10,6 +10,8 @@ class Deck
     @deck_size = 16
     @player_deck = Hash.new
     @monsters_defeat = 3
+    @current_ingame_key = self.which_monkey
+    @current_ingame_id = self.which_monid
     populate_deck
     puts("Initialized Deck")
     end
@@ -115,6 +117,8 @@ end
 
       # Perform the switch
       @player_deck[outgoing_card][:position] = :bench
+      @player_deck[outgoing_card][:monster_values][:cooldown] =
+        Monster.where(id: Card.where(id: [outgoing_card][:card_id]).pluck(:foreign_id)).pluck(:cooldown).first
       @player_deck[incoming_card][:position] = :gamearea
     end
   end
@@ -138,6 +142,11 @@ end
 
   def is_monster_ingame?
     @player_deck.any? { |_key, subhash| subhash[:position] == :gamearea }
+  end
+
+  def key_to_cardid(key_choice, player)
+    result = player.player_deck.find { |key, subhash| key == key_choice }
+    result ? result[1][:card_id] : nil
   end
 
   def which_monster_ingame
@@ -234,6 +243,46 @@ def damage_monster(chosen_key, damage, player)
   end
 end
 
+
+  def alter_status(chosen_key, chosen_status, player)
+  player.player_deck.each do |key, subhash|
+    if key == chosen_key
+      # Ensure the correct data is accessed
+      monster_content = subhash[:monster_values]
+      monster_content[:status_id] = chosen_status
+    end
+  end
+  end
+
+  def equip_to_monster(chosen_key, chosen_item_key, player)
+
+    equip_id = 0
+
+    player.player_deck.each do |key, subhash|
+      if key == chosen_item_key
+        cardid = subhash[:card_id]
+        equip_id = Equipable.where(id: Card.where(id: cardid).pluck(:foreign_id).first).pluck(:id).first
+      end
+    end
+
+    player.player_deck.each do |key, subhash|
+      if key == chosen_key
+        # Ensure the correct data is accessed
+        monster_content = subhash[:monster_values]
+        monster_content[:equipped_id] = equip_id
+        puts "Equiped equipable card #{chosen_item_key}, which is the equipable with id #{equip_id}"
+      end
+    end
+  end
+
+
+  def decrease_cooldowns(player)
+    player.player_deck.each do |key, subhash|
+      if key == player.which_monkey
+        subhash[:monster_values][:cooldown] -= 1
+      end
+    end
+  end
 
   def game_over?(player1, player2)
     # Check if any item is still in the deck
