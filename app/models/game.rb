@@ -1,12 +1,3 @@
-# Assuming Deck is already defined elsewhere
-class Deck
-  attr_accessor :player_deck
-
-  def initialize
-    @player_deck = {}
-  end
-end
-
 class Game
   attr_accessor :player1, :player2, :turn_number, :player1_turn
 
