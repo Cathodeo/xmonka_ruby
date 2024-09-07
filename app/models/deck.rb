@@ -64,6 +64,21 @@ end
   end
 
 
+  def draw_card
+    # Iterate over the player_deck to find the first card not in the hand
+    @player_deck.each do |key, value|
+      if value[:position] != :hand
+        value[:position] = :hand
+        puts "Drew card with key: #{key}"
+        return key  # Return the card key to confirm the card drawn
+      end
+    end
+    puts "No cards available to draw."
+    nil  # Return nil if no cards were available to draw
+  end
+
+
+
   def initialize_monster(monster_key)
     # This method checks against global card type and not the 'Key'
     # This means the first occurrence of any monster chosen of the same type will be
@@ -123,7 +138,7 @@ end
     end
   end
 
-  def terminate_card(player, card_key)
+  def self.terminate_card(player, card_key)
     #Discard a card.
     # Consumables = Terminated upon consumption
     # Monsters = Terminated when HP = 0
@@ -144,7 +159,11 @@ end
     @player_deck.any? { |_key, subhash| subhash[:position] == :gamearea }
   end
 
-  def key_to_cardid(key_choice, player)
+  def is_monster_benched?
+    @player_deck.any?  { |_key, subhash| subhash[:position] == :bench }
+  end
+
+  def self.key_to_cardid(key_choice, player)
     result = player.player_deck.find { |key, subhash| key == key_choice }
     result ? result[1][:card_id] : nil
   end
@@ -215,7 +234,45 @@ end
     end
   end
 
-def damage_monster(chosen_key, damage, player)
+
+  def monsters_in_bench
+    if is_monster_benched?
+      # Find all keys and subhashes where conditions are met
+      benched_monsters = @player_deck.select do |key, subhash|
+        subhash[:position] == :bench && subhash[:monster_card] == true
+      end
+
+      if benched_monsters.any?
+        # Print details of each found card
+        benched_monsters.each do |key, _|
+          puts "Card with key #{key}"
+        end
+
+        # Return the hash of found cards
+        benched_monsters
+      else
+        # No card found that meets the conditions
+        puts "No monster cards in the benched position!"
+        {}
+      end
+    else
+      puts "No cards in game!"
+      {}
+    end
+  end
+
+  def self.status_by_key(chosen_key, player)
+      player.player_deck.each do |key, subhash|
+      if key == chosen_key
+        monster_info = subhash[:monster_values]
+      end
+      status_returned = monster_info[:status]
+      puts "Status: #{status_returned}"
+    end
+  end
+
+
+  def self.damage_monster(chosen_key, damage, player)
   player.player_deck.each do |key, subhash|
     if key == chosen_key
       # Ensure the correct data is accessed
@@ -244,7 +301,7 @@ def damage_monster(chosen_key, damage, player)
 end
 
 
-  def alter_status(chosen_key, chosen_status, player)
+  def self.alter_status(chosen_key, chosen_status, player)
   player.player_deck.each do |key, subhash|
     if key == chosen_key
       # Ensure the correct data is accessed
@@ -254,7 +311,7 @@ end
   end
   end
 
-  def equip_to_monster(chosen_key, chosen_item_key, player)
+  def self.equip_to_monster(chosen_key, chosen_item_key, player)
 
     equip_id = 0
 
@@ -276,15 +333,15 @@ end
   end
 
 
-  def decrease_cooldowns(player)
-    player.player_deck.each do |key, subhash|
-      if key == player.which_monkey
+  def decrease_cooldowns
+    @player_deck.each do |key, subhash|
+      if key == self.which_monkey
         subhash[:monster_values][:cooldown] -= 1
       end
     end
   end
 
-  def game_over?(player1, player2)
+  def self.game_over?(player1, player2)
     # Check if any item is still in the deck
     cards_left = player2.player_deck.any? { |_key, value| value[:position] == :deck }
 

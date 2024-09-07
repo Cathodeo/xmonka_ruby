@@ -5,7 +5,7 @@ class Move < ApplicationRecord
     __method__
   end
 
-
+  
 
   def self.element_monid(monid)
     Element.where(id: (Monster.where(id: monid).pluck(:element_id).first)).pluck(:id).first
@@ -26,98 +26,126 @@ class Move < ApplicationRecord
   end
 
 
-  def self.pestilence(player, target_key)
+  def self.pestilence(_pself, foe, target_key)
       puts "Pestilence is used!"
       # Poison the opponent's monster
-      foe_element =  element_monid(player.which_monid)
+      foe_element =  element_monid(foe.which_monid)
       if foe_element == 2
-        player.alter_status(target_key, 3, player)
+        Deck.alter_status(target_key, 3, foe)
         puts "Animal foe is poisoned!"
       end
       damage = element_matchup(3, foe_element, 3)
-      player.damage_monster(target_key, damage, player)
+      Deck.damage_monster(target_key, damage, foe)
     end
 
-    def self.zapper(player, target_key)
-      puts "#{name} is used!"
+    def self.zapper(_pself, player, target_key)
+      puts "Zapper is used!"
       foe_element =  element_monid(player.which_monid)
       result = coin_toss
       if result == :heads
-        player.alter_status(target_key, 7, player)
+        Deck.alter_status(target_key, 7, player)
         puts "Foe is confused!"
         damage = element_matchup(1, foe_element, 3)
-        player.damage_monster(target_key, damage, player)
+        Deck.damage_monster(target_key, damage, player)
       else
         puts "Zapper missed!"
       end
     end
 
-    def stompede(opponent)
-      puts "#{name} is used!"
+    def self.stompede(_pself, foe, target_key)
+      puts "Stompede is used!"
+      foe_element =  element_monid(foe.which_monid)
+      damage = element_matchup(2, foe_element, 3)
+      Deck.damage_monster(target_key, damage, foe)
       # Force opponent to switch monsters
-      opponent.force_switch_monster
-      puts "Opponent switched their monster!"
+        if foe.is_benched? == false
+          puts "No benched monsters to switch with!"
+        else
+          random_benched = foe.benched_monsters.keys.sample
+          foe.switch_monsters(target_key, random_benched, true)
+          puts "Opponent switched their monster!"
+        end
     end
 
-    def horned_tackle(opponent)
-      puts "#{name} is used!"
-      # Simple attack with no special effects
-      damage_deal(opponent.monster, power)
+    def self.horned_tackle(_pself, foe, target_key)
+      foe_element = element_monid(foe.which_monid)
+      puts "Horned tackle is used!"
+      damage = element_matchup(2, foe_element, 3)
+      Deck.damage_monster(target_key, damage, foe)
     end
 
-    def energy_transfer(user)
-      puts "#{name} is used!"
-      # Heal the user or a benched robot
-      user.choose_heal_target.heal(1)
+    def self.energy_transfer(pself, foe, target_key)
+      foe_element = element_monid(foe.which_monid)
+      "Energy Transfer is used"
+      damage = element_matchup(1, foe_element, 2)
+      Deck.damage_monster(target_key, damage, foe)
+      Deck.damage_monster(pself.which_monkey, -1, pself)
       puts "Energy transfer heals 1 HP!"
     end
 
-    def rainbow_bomb(opponent)
-      puts "#{name} is used!"
+    def self.rainbow_bomb(_pself, foe, target_key)
+      puts "Rainbow bomb is used!"
       # Simple powerful attack
-      damage_deal(opponent.monster, power)
+      foe_element = element_monid(foe.which_monid)
+      damage = element_matchup(4, foe_element, 3)
+      Deck.damage_monster(target_key, damage, foe)
     end
 
-    def null_frequency(opponent)
-      puts "#{name} is used!"
-      if opponent.monster.robot_type?
-        damage_deal(opponent.monster, power)
-      else
-        puts "Move failed, non-Robot foe!"
+    def null_frequency(_pself, foe, target_key)
+      puts "Null Frequency is used!"
+      foe_element =  element_monid(foe.which_monid)
+      if foe_element == 1 || foe_element == 4
+        Deck.alter_status(target_key, 7, foe)
+        puts "The foe's electronic systems are failing!"
       end
+      damage = element_matchup(4, foe_element, 3)
+      Deck.damage_monster(target_key, damage, foe)
     end
 
-    def droid_hammer(opponent)
-      puts "#{name} is used!"
+    def droid_hammer(_pself, foe, target_key)
+      foe_element =  element_monid(foe.which_monid)
+      puts "Droid Hammer is used!"
       result = coin_toss
       if result == :heads
-        opponent.monster.apply_status(:stunned)
-        puts "Foe is stunned for a turn!"
+        Deck.alter_status(target_key, 1, foe)
+        "The enemy is paralyzed!"
       end
+      damage = element_matchup(1, foe_element, 3)
+      Deck.damage_monster(target_key, damage, foe)
     end
 
-    def corroder(opponent)
-      puts "#{name} is used!"
-      multiplier = opponent.monster.robot_type? ? 2 : 1
-      damage_deal(opponent.monster, power * multiplier)
+    def corroder(_pself, foe, target_key)
+      foe_element =  element_monid(foe.which_monid)
+      pstatus_byuts "Corroder is used!"
+      damage = element_matchup(3, foe_element, 3)
+      if foe_element == 1
+        damage = damage * 2
+        puts "The corrosive attack melts the robotic foe!"
+      end
+      Deck.damage_monster(target_key, damage, foe)
     end
 
-    def foul_gas(opponent)
-      puts "#{name} is used!"
-      multiplier = opponent.monster.poisoned? ? 2 : 1
-      damage_deal(opponent.monster, power * multiplier)
+    def foul_gas(_pself, foe, target_key)
+      puts "Foul gas is used!"
+      foe_element =  element_monid(foe.which_monid)
+      damage = element_matchup(3, foe_element, 3)
+      which_key = foe.which_monkey
+      #Missing a method on Deck to check status of current mon_key!
+      Deck.damage_monster(target_key, damage, foe)
     end
 
-    def gooey_string(opponent)
-      puts "#{name} is used!"
-      # Prevent opponent from switching monsters
-      opponent.monster.apply_status(:immobilized)
+    def gooey_string(_pself, foe, target_key)
+      puts "Gooey_string is used!"
+      foe_element =  element_monid(foe.which_monid)
+      damage = element_matchup(3, foe_element, 1)
+      Deck.damage_monster(target_key, damage, foe)
+
     end
 
-    def irradiate(game)
-      puts "#{name} is used!"
-      # Create a field that deals passive damage
-      game.create_field_effect(:irradiate)
+    def irradiate(_pself, _foe, game)
+      puts "Irradiate is used!"
+      # Create a field that deals passive damage and reduces 1HP damage
+      game.passive_effects << "Irradiate"
       puts "Irradiate field effect is active!"
     end
 
@@ -128,7 +156,7 @@ class Move < ApplicationRecord
       puts "Revealed card: #{revealed_card.name}"
     end
 
-    def bombastic_rhythm(user, opponent)
+    def bombastic_rhythm(pself, foe, chosen_key)
       puts "#{name} is used!"
       result = coin_toss
       if result == :heads
